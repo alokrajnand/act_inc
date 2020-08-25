@@ -6,6 +6,7 @@ ENV CONFIG_ROOT /config
 
 RUN mkdir ${CONFIG_ROOT}
 COPY requirements.txt ${CONFIG_ROOT}/requirements.txt
+RUN pip install --upgrade pip
 RUN pip install -r ${CONFIG_ROOT}/requirements.txt
 
 RUN mkdir ${APP_ROOT}
