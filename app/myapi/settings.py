@@ -27,7 +27,7 @@ SECRET_KEY = os.getenv('MYAPI_SECRET_KEY', '')
 DEBUG = ast.literal_eval(os.getenv('DEBUG', 'True'))
 
 ALLOWED_HOSTS = ['127.0.0.1', 'localhost', '0.0.0.0', ]
-
+AUTH_USER_MODEL = 'userauth.User'
 
 # Application definition
 
@@ -38,6 +38,14 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    ###
+    'rest_framework',
+    'rest_framework.authtoken',
+    'corsheaders',
+    ###
+    'userauth',
+    'userprofile',
+
 ]
 
 MIDDLEWARE = [
@@ -76,8 +84,12 @@ WSGI_APPLICATION = 'myapi.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': os.getenv('DATABASE_NAME'),
+        'USER': os.getenv('DATABASE_USER'),
+        'PASSWORD': os.getenv('DATABASE_PASSWORD'),
+        'HOST': os.getenv('DATABASE_HOST'),
+        'PORT': os.getenv('DATABASE_PORT'),
     }
 }
 
@@ -127,3 +139,8 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATIC_URL = '/static/'
 
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+
+
+AUTHENTICATION_BACKENDS = (
+    ('django.contrib.auth.backends.ModelBackend'),
+)
