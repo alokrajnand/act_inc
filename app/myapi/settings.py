@@ -26,7 +26,7 @@ SECRET_KEY = os.getenv('MYAPI_SECRET_KEY', '')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = ast.literal_eval(os.getenv('DEBUG', 'True'))
 
-ALLOWED_HOSTS = ['127.0.0.1', 'localhost', '0.0.0.0', ]
+ALLOWED_HOSTS = ['*']
 AUTH_USER_MODEL = 'userauth.User'
 
 # Application definition
@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     ###
     'userauth',
     'userprofile',
+    'incident',
 
 ]
 
