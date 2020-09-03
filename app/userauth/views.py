@@ -40,13 +40,13 @@ def UserViewSet(request, format=None):
         if serializer.is_valid():
             # generate otp
             serializer.save()
-            phone_number = serializer.data.get('phone_number')
-            name = serializer.data.get('name')
+            #email_address = serializer.data.get('email_address')
+
             ## name = serializer.data.get('name')
-            otp = GenerateOtp(phone_number)
+            #otp = GenerateOtp(phone_number)
             # send mail to the email address
             # create Entry of the user in the profile table WE have to create a function to insert the data
-            insert_user(phone_number, name)
+            #insert_user(phone_number, name)
             # redirect to the varification page -- done at fron end
             return JsonResponse(serializer.data, status=200)
         else:
@@ -75,7 +75,7 @@ class LoginViewSet(ObtainAuthToken):
             # if data for the user daoes not exists in the varification table
             if (phone_active.count() == 0):
                 # generate otp and send and ask for varification redirect it to varification page
-                otp = GenerateOtp(user)
+                #otp = GenerateOtp(user)
                 content = 'Phone number is not validated please validate'
                 return Response(content, status=status.HTTP_403_FORBIDDEN)
 

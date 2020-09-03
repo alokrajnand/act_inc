@@ -51,8 +51,6 @@ class ProfileViewSet(viewsets.ViewSet):
             content = 'No Data in the table'
             return Response(content, status.HTTP_401_UNAUTHORIZED)
 
-
-
     # Update profile data
 
     def put_profile(self, request, name, pk=None):
