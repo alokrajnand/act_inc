@@ -21,9 +21,10 @@ from userauth.models import *
 
 
 class Profile(models.Model):
-    phone_number = models.OneToOneField(
+    email_address = models.OneToOneField(
         User, to_field='email_address', on_delete=models.CASCADE)
     name = models.CharField(max_length=200, null=True)
+    role = models.CharField(max_length=200, null=True)
 
     def __str__(self):
         return self.__all__

@@ -27,7 +27,7 @@ SECRET_KEY = os.getenv('MYAPI_SECRET_KEY', '')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = ast.literal_eval(os.getenv('DEBUG', 'True'))
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ['*', '10.0.2.2', 'localhost']
 
 AUTH_USER_MODEL = 'userauth.User'
 
@@ -48,6 +48,8 @@ INSTALLED_APPS = [
     ###
     'userauth',
     'userprofile',
+    'incident',
+    'route',
 
 ]
 
@@ -139,7 +141,6 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 
 STATIC_URL = '/static/'
-
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 

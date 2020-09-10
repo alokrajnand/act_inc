@@ -18,38 +18,16 @@ from rest_framework import viewsets
 from .serializer import *
 from .models import *
 from django.core.mail import send_mail
-# importing "random" for random operations
-import random
-from django.db import Error
 
 
 # ******************************************************************
-# user  profile viewset
+# Incident
 # *******************************************************************
 
-
-class ProfileViewSet(viewsets.ViewSet):
-
+class RouteViewSet(viewsets.ViewSet):
     permission_classes = [AllowAny]
 
-    def get_profile(self, request, name, *args, **kwargs):
-        try:
-            user_profile = Profile.objects.get(
-                email_address_id=name)
-            serializer = UserProfileSerializer(user_profile)
-            return Response(serializer.data)
-        except Profile.DoesNotExist:
-            content = 'No Data in the table'
-            return Response(content, status.HTTP_401_UNAUTHORIZED)
-
-    # Update profile data
-
-    def put_profile(self, request, name, pk=None):
-        user_profile = Profile.objects.get(email_address_id=name)
-        serializer = UserProfileSerializer(
-            user_profile, data=request.data, partial=True)
-        if serializer.is_valid():
-            serializer.save()
-            return JsonResponse(serializer.data, status=201)
-        else:
-            return JsonResponse(serializer.errors, status=400)
+    def getRouteAll(self, request, format=None):
+        data = Route.objects.all()
+        serializer = RouteSerializer(data, many=True)
+        return Response(serializer.data)

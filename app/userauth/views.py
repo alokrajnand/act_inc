@@ -40,13 +40,13 @@ def UserViewSet(request, format=None):
         if serializer.is_valid():
             # generate otp
             serializer.save()
-            #email_address = serializer.data.get('email_address')
+            # email_address = serializer.data.get('email_address')
 
-            ## name = serializer.data.get('name')
-            #otp = GenerateOtp(phone_number)
+            # name = serializer.data.get('name')
+            # otp = GenerateOtp(phone_number)
             # send mail to the email address
             # create Entry of the user in the profile table WE have to create a function to insert the data
-            #insert_user(phone_number, name)
+            # insert_user(phone_number, name)
             # redirect to the varification page -- done at fron end
             return JsonResponse(serializer.data, status=200)
         else:
@@ -62,35 +62,40 @@ class LoginViewSet(ObtainAuthToken):
 
     def post(self, request, *args, **kwargs):
         # TO get data from the request object
-        user = request.data.get('username')
+        email_address = request.data.get('username')
         # validate that user exists in the database
-        phone_number = User.objects.filter(phone_number=user)
+        email_address = User.objects.filter(email_address=email_address)
         # if user does not exists in the database send massage need to register
-        if (phone_number.count() == 0):
+        if (email_address.count() == 0):
             content = 'User Does not exists please register'
             return Response(content, status=status.HTTP_404_NOT_FOUND)
         # If user exists in the data base check for the varification
         else:
-            phone_active = Varification.objects.filter(phone_number_id=user)
+            email_active = Varification.objects.filter(
+                email_address_id__in=email_address)
             # if data for the user daoes not exists in the varification table
-            if (phone_active.count() == 0):
+            if (email_active.count() == 0):
                 # generate otp and send and ask for varification redirect it to varification page
-                #otp = GenerateOtp(user)
-                content = 'Phone number is not validated please validate'
+                # otp = GenerateOtp(user)
+                content = 'Email is not validated please validate'
                 return Response(content, status=status.HTTP_403_FORBIDDEN)
 
             # if data for the user exists in the varification table then cheack the varification status
             else:
                 # validate the validation and counter accordingly respons
-                data = Varification.objects.get(phone_number_id=user)
+                data = Varification.objects.get(
+                    email_address_id__in=email_address)
+                print(data.email_varification)
                 # check the varification status on the varification table if not varified
-                if (data.phone_varification != 'done'):
+                if (data.email_varification != 'done'):
                     # generate otp and send and ask for varification redirect it to varification page
-                    otp = GenerateOtp(user)
-                    content = 'Phone number is not validated please validate'
+                    # otp = GenerateOtp(user)
+                    content = 'Email is not validated please validate'
                     return Response(content, status=status.HTTP_403_FORBIDDEN)
                 # If varification is allready in the varification table
                 else:
+                    user_profile = Profile.objects.get(
+                        email_address_id__in=email_address)
                     serializer = self.serializer_class(
                         data=request.data, context={'request': request})
                     serializer.is_valid(raise_exception=True)
@@ -98,8 +103,9 @@ class LoginViewSet(ObtainAuthToken):
                     token, created = Token.objects.get_or_create(user=user)
                     return Response({
                         'token': token.key,
-                        'phone_number': user.phone_number,
-                        'name': user.name
+                        'email_address': user.email_address,
+                        'role': user_profile.role,
+
                     })
 
 # **********************************************************

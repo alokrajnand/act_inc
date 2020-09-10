@@ -3,7 +3,7 @@ version: "3.7"
 services:
   app:
     build: ./app
-    container_name: django-gunicorn
+    container_name: api
     restart: always
     env_file:
       - django.env
@@ -11,7 +11,7 @@ services:
       - ./app/static:/app/static
     ports:
       - "8000:8000"
-    command: bash -c "python manage.py makemigrations --merge && python manage.py migrate &&  python manage.py collectstatic --noinput && gunicorn --workers=2 --bind=0.0.0.0:8000 myapp.wsgi:application"
+    command: bash -c "python manage.py makemigrations  && python manage.py migrate &&  python manage.py collectstatic --noinput && gunicorn --workers=2 --bind=0.0.0.0:8000 myapp.wsgi:application"
 
   nginx:
     image: nginx:1.17
