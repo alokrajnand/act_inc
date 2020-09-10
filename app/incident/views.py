@@ -28,12 +28,13 @@ class IncidentViewSet(viewsets.ViewSet):
     permission_classes = [AllowAny]
 
     def getIncAll(self, request, format=None):
-        data = Incident.objects.all()
+        data = Incident.objects.all().order_by('-inc_created_dt')
         serializer = IncidentSerializer(data, many=True)
         return Response(serializer.data)
 
     def getIncByUser(self, request, name):
-        data = Incident.objects.filter(inc_created_by=name)
+        data = Incident.objects.filter(
+            inc_created_by=name)
         if (data.count() == 0):
             return Response({
                 'message': 'No Data',

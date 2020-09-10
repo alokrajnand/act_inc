@@ -23,4 +23,5 @@ urlpatterns = [
     path('api/profile/', include('userprofile.urls')),
     path('api/inc/', include('incident.urls')),
     path('api/route/', include('route.urls')),
+    path('api/incmessage/', include('incmessage.urls')),
 ]
